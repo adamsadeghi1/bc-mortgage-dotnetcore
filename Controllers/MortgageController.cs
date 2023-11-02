@@ -32,7 +32,16 @@ namespace mortgage_calculator_dotNetCore.Controllers
         public IActionResult CalculateMortgage([FromBody] MortgageDto mortgageDto)
         {
             var calculate = mortgageCalculateFactory.GetMortgageCalculator(mortgageDto);
-            return Ok(calculate.runCalculation(mortgageDto));
+            try
+            {
+                var result = calculate.runCalculation(mortgageDto);
+                return Ok(result);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return BadRequest(e.Message);
+            }
         }
     }
 }
